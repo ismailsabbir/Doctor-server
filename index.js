@@ -16,6 +16,7 @@ async function run(){
     console.log('Mongodb connected');
     const servicecollection=client.db('doctorinfo').collection('services');
     const reviewcollection=client.db('doctorinfo').collection('review');
+    const appoinmentcollection=client.db('doctorinfo').collection('appoinment');
     app.get('/services',async(req,res)=>{
       const query={}
       const cursor=servicecollection.find(query);
@@ -27,6 +28,18 @@ async function run(){
       const query={_id:new ObjectId(id)};
       const services=await servicecollection.findOne(query);
       res.send(services);
+    })
+    app.post('/appoinment',async(req,res)=>{
+      const appoinmentinfo=req.body;
+      const result=await appoinmentcollection.insertOne(appoinmentinfo);
+      res.send(result);
+      console.log(result);
+    })
+    app.get('/appoinment',async(req,res)=>{
+      const query={};
+      const cursor=appoinmentcollection.find(query);
+      const appoinment=await cursor.toArray();
+      res.send(appoinment);
     })
     app.post('/review',async(req,res)=>{
       const review=req.body;
