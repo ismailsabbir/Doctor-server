@@ -47,8 +47,9 @@ async function run(){
       res.send(result);
       console.log(result);
     })
-    app.get('/review',async(req,res)=>{
-      const query={};
+    app.get(`/review/:revtypes`,async(req,res)=>{
+      const reviewtypes=req.params.revtypes;
+      const query={servicestype:reviewtypes};
       const cursor=reviewcollection.find(query);
       const review=await cursor.toArray();
       res.send(review)
