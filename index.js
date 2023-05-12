@@ -17,6 +17,25 @@ async function run(){
     const servicecollection=client.db('doctorinfo').collection('services');
     const reviewcollection=client.db('doctorinfo').collection('review');
     const appoinmentcollection=client.db('doctorinfo').collection('appoinment');
+    const storedservicescollection=client.db('doctorinfo').collection('storedata');
+    app.get('/storedata',async(req,res)=>{
+      const query={};
+      const cursor=storedservicescollection.find(query);
+      const services=await cursor.toArray();
+      res.send(services);
+    })
+    app.get('/storedata/:id',async(req,res)=>{
+      const id=req.params.id;
+      const query={_id:new ObjectId(id)};
+      const services=await storedservicescollection.findOne(query);
+      res.send(services);
+    })
+    app.post('/services',async(req,res)=>{
+      const services=req.body;
+      const result=await servicecollection.insertOne(services);
+      res.send(result);
+      console.log(result);
+    })
     app.get('/services',async(req,res)=>{
       const query={}
       const cursor=servicecollection.find(query);
@@ -54,6 +73,24 @@ async function run(){
       const review=await cursor.toArray();
       res.send(review)
     })
+    // app.get('/review',async(req,res)=>{
+    //   const query={};
+    //   const cursor=reviewcollection.find(query);
+    //   const review=await cursor.toArray();
+    //   res.send(review);
+      
+    // })
+    app.get('/review',async(req,res)=>{
+      let query={};
+      if(req.query.email){
+        query={
+          email:req.query.email
+        }
+      }
+      const cursor=reviewcollection.find(query);
+      const specificreview=await cursor.toArray();
+      res.send(specificreview);
+    });
   }
   catch(error){
     console.log(error)
