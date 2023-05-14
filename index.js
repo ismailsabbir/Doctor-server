@@ -1,7 +1,6 @@
 const express = require('express')
 const { MongoClient, ObjectId } = require('mongodb');
 const cors = require('cors')
-// const services=require('./services.json')
 const app = express()
 const port = 5000
 app.use(cors())
@@ -98,12 +97,6 @@ async function run() {
       res.send(result);
       console.log(result);
     })
-    // app.get(`/review/:id`,async(req,res)=>{
-    //   const id=req.params.id;
-    //   const query={_id:new ObjectId(id)};
-    //   const review=await reviewcollection.findOne(query);
-    //   res.send(review);
-    // })
     app.get(`/review/:revtypes`, async (req, res) => {
       const reviewtypes = req.params.revtypes;
       const query = { servicestype: reviewtypes };
@@ -140,10 +133,6 @@ run()
 app.get('/', (req, res) => {
   res.send('Hello Doctor server!')
 })
-// app.get('/services',(req,res)=>{
-//   res.send(services);
-// })
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
